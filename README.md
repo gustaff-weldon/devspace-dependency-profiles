@@ -1,33 +1,20 @@
 This repository contains main project and subproject.
-main-project depends on subprojecy
+main-project depends on subproject
+
+When using profiles, they do not seem to be applied to dependencies, even when passed explicitly to `run_dependencies`
 
 To reproduce issue.
 ```
-❯ cd ../main-project
-❯ devspace deploy
+❯ cd main-project
+❯ devspace deploy --profile test
 ```
 
-You will get an error:
-```
-info Using namespace 'devspace'
-info Using kube context 'docker-desktop'
-sub-project couldn't find flag profile
-fatal exit status 1
-```
+Check cluster, you'll see that main project is using `alpine:3.15` as an image, but the dependency did not get it applied from profile.
 
-If you try to deploy just the project a:
+If you try to deploy just the sub-project:
 ```
 ❯ cd sub-project
-❯ devspace deploy
+❯ devspace deploy --profile test
 ```
 
-It works fine
-
-In this repro I have used global `profile`  flag but it also fails if I try to read deploy flag eg.:
-```
-❯ devspace deploy
-info Using namespace 'devspace'
-info Using kube context 'docker-desktop'
-sub-project couldn't find flag build-sequential
-fatal exit status 1
-```
+It works fine, container runs with a a proper profile image.

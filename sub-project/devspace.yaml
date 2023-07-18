@@ -4,12 +4,19 @@ name: sub-project
 pipelines:
   deploy:
     run: |-
-      # this does not fail
-      profiles=$(get_flag "profile")
+      profile=$(get_flag "profile")
+      echo "Current profile: ${profile}"
 
-      run_dependencies --all
+      run_dependencies --all --set-flag profile=${profile}
       build_images --all -t ${DEVSPACE_RANDOM}
       create_deployments --all
+
+profiles:
+  - name: test
+    patches:
+    - op: replace
+      path: deployments.sub-project.helm.values.containers[0].image
+      value: alpine:3.15
 
 # This is a list of `images` that DevSpace can build for this project
 # We recommend to skip image building during development (devspace dev) as much as possible

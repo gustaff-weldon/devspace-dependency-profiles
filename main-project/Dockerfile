@@ -6,8 +6,5 @@ COPY \
   files-main \
   files-main
 
-RUN \
-  sleep 10
-
 ENTRYPOINT \
   ["sh"]
