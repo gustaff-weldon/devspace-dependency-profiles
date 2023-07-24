@@ -11,6 +11,11 @@ pipelines:
 profiles:
   - name: test
     patches:
+    # A workaround suggested on devspace Slack:
+    # - op: replace
+    #   path: dependencies.sub-project.profiles
+    #   value:
+    #   - test
     - op: replace
       path: deployments.main.helm.values.containers[0].image
       value: alpine:3.15
